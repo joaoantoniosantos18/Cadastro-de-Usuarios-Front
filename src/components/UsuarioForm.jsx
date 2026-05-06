@@ -8,6 +8,17 @@ function UsuarioForm() {
   const { id } = useParams()
   const modoEdicao = Boolean(id)
 
+  const mascaraTelefone = (valor) => {
+  const numeros = valor.replace(/\D/g, '')
+
+  if (numeros.length <= 2)  return `(${numeros}`
+  if (numeros.length <= 7)  return `(${numeros.slice(0,2)}) ${numeros.slice(2)}`
+  if (numeros.length <= 11) return `(${numeros.slice(0,2)}) ${numeros.slice(2,7)}-${numeros.slice(7)}`
+
+  // Limita em 11 dígitos
+  return `(${numeros.slice(0,2)}) ${numeros.slice(2,7)}-${numeros.slice(7,11)}`
+}
+
   const [form, setForm] = useState({ nome: '', email: '', idade: '', telefone: '' })
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState('')
@@ -27,8 +38,12 @@ function UsuarioForm() {
   }, [id])
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+  const { name, value } = e.target
+
+  const novoValor = name === 'telefone' ? mascaraTelefone(value) : value
+
+  setForm({ ...form, [name]: novoValor })
+}
 
   const handleSubmit = async (e) => {
     e.preventDefault()
