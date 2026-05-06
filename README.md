@@ -1,16 +1,81 @@
-# React + Vite
+# 👥 Cadastro de Usuários — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interface web para cadastro, listagem, edição e remoção de usuários, desenvolvida em React com design de dashboard profissional dark mode.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🛠️ Tecnologias
 
-## React Compiler
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📁 Estrutura do projeto
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+cadastro-usuarios-front/
+├── src/
+│   ├── components/
+│   │   ├── Sidebar.jsx          → menu lateral fixo
+│   │   ├── UsuarioLista.jsx     → dashboard com tabela de usuários
+│   │   └── UsuarioForm.jsx      → formulário de criação e edição
+│   ├── services/
+│   │   └── api.js               → configuração do Axios e chamadas ao backend
+│   ├── App.jsx                  → rotas e layout principal
+│   ├── main.jsx                 → ponto de entrada do React
+│   └── index.css                → estilos globais do dashboard
+├── index.html
+├── package.json
+└── vite.config.js
+```
+
+---
+
+## ⚙️ Como rodar localmente
+
+### Pré-requisitos
+
+- [Node.js](https://nodejs.org) instalado
+- Backend rodando em `http://localhost:3000` → [Cadastro de Usuários — Backend](https://github.com/joaoantoniosantos18/Cadastro-de-Usuarios-Back)
+
+### Passo a passo
+
+**1. Clone o repositório**
+```bash
+git clone https://github.com/joaoantoniosantos18/Cadastro-de-Usuarios-Front.git
+cd Cadastro-de-Usuarios-Front
+```
+
+**2. Instale as dependências**
+```bash
+npm install
+```
+
+**3. Inicie o servidor de desenvolvimento**
+```bash
+npm run dev
+```
+
+Acesse `http://localhost:5173` no navegador.
+
+> ⚠️ O backend precisa estar rodando para a aplicação funcionar. Inicie o backend antes de abrir o frontend.
+
+---
+
+## 📡 Páginas da aplicação
+
+| Rota | Descrição |
+|------|-----------|
+| `/` | Dashboard com cards de estatísticas e tabela de usuários |
+| `/novo` | Formulário para cadastrar novo usuário |
+| `/editar/:id` | Formulário preenchido para editar usuário existente |
+
+---
+
+## 🔗 Backend
+
+Este frontend consome a API desenvolvida em Node.js + Express + MongoDB:
+
+[Cadastro de Usuários — Backend](https://github.com/joaoantoniosantos18/Cadastro-de-Usuarios-Back)
