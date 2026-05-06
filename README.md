@@ -2,6 +2,9 @@
 
 Interface web para cadastro, listagem, edição e remoção de usuários, desenvolvida em React com design de dashboard profissional dark mode.
 
+<img width="1919" height="946" alt="image" src="https://github.com/user-attachments/assets/790accf9-ed5d-4cc5-bc15-7409f9ea542f" />
+
+
 ---
 
 ## 🛠️ Tecnologias
