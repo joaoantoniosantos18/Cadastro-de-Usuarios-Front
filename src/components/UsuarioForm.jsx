@@ -1,3 +1,4 @@
+// src/components/UsuarioForm.jsx
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { criarUsuario, buscarUsuario, atualizarUsuario } from '../services/api'
@@ -7,12 +8,7 @@ function UsuarioForm() {
   const { id } = useParams()
   const modoEdicao = Boolean(id)
 
-  const [form, setForm] = useState({
-    nome: '',
-    email: '',
-    idade: '',
-    telefone: '',
-  })
+  const [form, setForm] = useState({ nome: '', email: '', idade: '', telefone: '' })
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState('')
   const [sucesso, setSucesso] = useState('')
@@ -21,14 +17,9 @@ function UsuarioForm() {
     if (modoEdicao) {
       setCarregando(true)
       buscarUsuario(id)
-        .then((resposta) => {
-          const u = resposta.data.dados
-          setForm({
-            nome: u.nome,
-            email: u.email,
-            idade: u.idade,
-            telefone: u.telefone,
-          })
+        .then((r) => {
+          const u = r.data.dados
+          setForm({ nome: u.nome, email: u.email, idade: u.idade, telefone: u.telefone })
         })
         .catch(() => setErro('Não foi possível carregar o usuário.'))
         .finally(() => setCarregando(false))
@@ -36,10 +27,7 @@ function UsuarioForm() {
   }, [id])
 
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    })
+    setForm({ ...form, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
@@ -47,7 +35,6 @@ function UsuarioForm() {
     setCarregando(true)
     setErro('')
     setSucesso('')
-
     try {
       if (modoEdicao) {
         await atualizarUsuario(id, form)
@@ -70,30 +57,52 @@ function UsuarioForm() {
   }
 
   return (
-    <div className="row justify-content-center">
-      <div className="col-md-6">
-        <div className="card shadow-sm">
-          <div className="card-header bg-white py-3">
-            <h4 className="mb-0 fw-semibold">
-              {modoEdicao ? '✏️ Editar Usuário' : '➕ Novo Usuário'}
-            </h4>
+    <>
+      {/* Topbar */}
+      <div className="topbar">
+        <div>
+          <div className="topbar-title">{modoEdicao ? 'Editar Usuário' : 'Novo Usuário'}</div>
+          <div className="topbar-sub">{modoEdicao ? 'Atualize os dados do usuário' : 'Preencha os dados para cadastrar'}</div>
+        </div>
+      </div>
+
+      <div className="page">
+
+        {/* Alertas */}
+        {erro && (
+          <div className="alert-custom alert-error" style={{ maxWidth: 560 }}>
+            <span>⚠️</span>
+            <span>{erro}</span>
+            <button
+              onClick={() => setErro('')}
+              style={{ marginLeft: 'auto', background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', fontSize: '16px' }}
+            >×</button>
           </div>
-          <div className="card-body p-4">
+        )}
+        {sucesso && (
+          <div className="alert-custom alert-success" style={{ maxWidth: 560 }}>
+            <span>✓</span>
+            <span>{sucesso}</span>
+          </div>
+        )}
 
-            {erro && (
-              <div className="alert alert-danger alert-dismissible">
-                {erro}
-                <button className="btn-close" onClick={() => setErro('')} />
-              </div>
-            )}
-            {sucesso && <div className="alert alert-success">{sucesso}</div>}
+        {/* Formulário */}
+        <div className="form-card">
+          <div className="form-card-header">
+            <div className="form-card-icon">
+              {modoEdicao ? '✏️' : '➕'}
+            </div>
+            <h4>{modoEdicao ? 'Editar Usuário' : 'Cadastrar Usuário'}</h4>
+          </div>
 
+          <div className="form-card-body">
             <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label className="form-label fw-medium">Nome</label>
+
+              <div className="form-group">
+                <label className="form-label-custom">Nome completo</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="form-input-custom"
                   name="nome"
                   value={form.nome}
                   onChange={handleChange}
@@ -102,11 +111,11 @@ function UsuarioForm() {
                 />
               </div>
 
-              <div className="mb-3">
-                <label className="form-label fw-medium">E-mail</label>
+              <div className="form-group">
+                <label className="form-label-custom">E-mail</label>
                 <input
                   type="email"
-                  className="form-control"
+                  className="form-input-custom"
                   name="email"
                   value={form.email}
                   onChange={handleChange}
@@ -115,53 +124,61 @@ function UsuarioForm() {
                 />
               </div>
 
-              <div className="row">
-                <div className="col-md-4 mb-3">
-                  <label className="form-label fw-medium">Idade</label>
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label-custom">Idade</label>
                   <input
                     type="number"
-                    className="form-control"
+                    className="form-input-custom"
                     name="idade"
                     value={form.idade}
                     onChange={handleChange}
-                    placeholder="Ex: 25"
+                    placeholder="25"
                     min="1"
                     max="120"
                     required
                   />
                 </div>
-                <div className="col-md-8 mb-3">
-                  <label className="form-label fw-medium">Telefone</label>
+                <div className="form-group">
+                  <label className="form-label-custom">Telefone</label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-input-custom"
                     name="telefone"
                     value={form.telefone}
                     onChange={handleChange}
-                    placeholder="Ex: (11) 91234-5678"
+                    placeholder="(11) 91234-5678"
                     required
                   />
                 </div>
               </div>
 
-              <div className="d-flex gap-2 mt-2">
-                <button type="submit" className="btn btn-primary" disabled={carregando}>
+              <div className="form-actions">
+                <button type="submit" className="btn-primary-custom" disabled={carregando}>
                   {carregando ? (
-                    <><span className="spinner-border spinner-border-sm me-2" />Salvando...</>
+                    <>
+                      <div style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
+                      Salvando...
+                    </>
                   ) : (
-                    modoEdicao ? 'Salvar alterações' : 'Cadastrar'
+                    modoEdicao ? '✓ Salvar alterações' : '+ Cadastrar'
                   )}
                 </button>
-                <button type="button" className="btn btn-outline-secondary" onClick={() => navigate('/')}>
+                <button
+                  type="button"
+                  className="btn-secondary-custom"
+                  onClick={() => navigate('/')}
+                >
                   Cancelar
                 </button>
               </div>
-            </form>
 
+            </form>
           </div>
         </div>
+
       </div>
-    </div>
+    </>
   )
 }
 
